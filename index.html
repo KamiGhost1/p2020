@@ -26,29 +26,73 @@
         <a href="./bin.html" class="btn btn-primary">Зашифровать одноразовым блокнотом</a>
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%; margin-top: 20px;">
-        <textarea name="" id="msg" cols="50" rows="5" placeholder="Введи сообщение для шифрования"></textarea>
+        <textarea  id="msg" cols="50" rows="5" placeholder="Введи сообщение для шифрования"></textarea>
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <input type="text" id="key" placeholder="ключ">
+        <input type="text" id="Ekey" placeholder="ключ">
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <input type="button" id="btn" value="Зашифровать">
+        <input type="button" id="btn1" value="Зашифровать">
+        <input type="button" id="btn2" value="Расшифровать">
+        <input type="button" id="btn3" value="Отчистить">
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <textarea name="" id="Emsg" cols="50" rows="5" placeholder="шифр"></textarea>
+        <textarea id="Emsg" cols="50" rows="5" placeholder="шифр"></textarea>
     </div>
     <script>
-        let msg = document.getElementById('msg').value;
+
+        let msg = document.getElementById('msg');
         let Emsg = document.getElementById('Emsg');
-        let key = document.getElementById('key').value;
+        let key = document.getElementById('Ekey');
         
-        $('#btn').click(()=>{
-            if(key === '' || msg === ''){
+        $('#btn3').click(()=>{
+            Emsg.value ='';
+            msg.value = '';
+            key.value = '';
+        })
+
+        $('#btn1').click(()=>{
+            if(key.value === '' || msg.value === ''){
             alert('Введи ссобщение и ключ для шифрования!')
             }else{
-                Emsg.value = 'hi'
+                Emsg.value = ''
+                let eM = []
+                let eK = []
+                eM = msg.value.split('')
+                eK = key.value.split('')
+                for(let i=0;i<eM.length; i++){
+                    Emsg.value += String.fromCharCode(crypt(eM,eK,i));
+                }
             }
         })
+
+        let crypt = function(eM, key, i){
+            let mod = i % key.length
+            let answer = (String(eM[i]).charCodeAt(0) + String(key[mod]).charCodeAt(0));
+            console.log(key.length, mod, answer);
+            return answer;
+        }
+        $('#btn2').click(()=>{
+            if(msg.value =='' || key.value ==''){
+                alert('Введите шифр и ключ!')
+            }else{
+                Emsg.value = ''
+                let eM = []
+                let eK = []
+                eM = msg.value.split('')
+                eK = key.value.split('')
+                for(let i=0;i<eM.length; i++){
+                    Emsg.value += String.fromCharCode(decrypt(eM,eK,i));
+                }
+            }
+        })
+
+        let decrypt = function(eM, key, i){
+            let mod = i % key.length
+            let answer = (String(eM[i]).charCodeAt(0) - String(key[mod]).charCodeAt(0));
+            console.log(key.length, mod, answer);
+            return answer;
+        }
     </script>
 </body>
 </html>

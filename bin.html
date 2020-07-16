@@ -29,28 +29,80 @@
         <textarea name="" id="msg" cols="50" rows="5" placeholder="Введи сообщение для шифрования"></textarea>
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <input type="text" id="key" placeholder="ключ">
+        <textarea id="key" cols="50" rows="5" placeholder="Ключ"></textarea>
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <input type="button" id="btn" value="Зашифровать">
+        <input type="button" id="btn1" value="Зашифровать">
+        <input type="button" id="btn2" value="Расшифровать">
+        <input type="button" id="btn3" value="Отчистить">
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
-        <textarea name="" id="Emsg" cols="50" rows="5" placeholder="шифр"></textarea>
+        <textarea name="" id="Emsg" cols="50" rows="5" placeholder="Шифр"></textarea>
     </div>
     <script>
-        let msg = document.getElementById('msg').value;
-        let Emsg = document.getElementById('Emsg');
-        let key = document.getElementById('key').value;
         
-        $('#btn').click(()=>{
-            console.log(msg);
-            
-            if(key == '' || msg == ''){
-            alert('Введи ссобщение и ключ для шифрования!')
+        let msg = document.getElementById('msg');
+        let Emsg = document.getElementById('Emsg');
+        let key = document.getElementById('key');
+
+        $('#btn3').click(()=>{
+            Emsg.value ='';
+            msg.value = '';
+            key.value = '';
+        })
+        
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        $('#btn1').click(()=>{
+            if(msg.value == '' && key.value == ''){
+                alert('Введите сообщение и/или ключ!')
             }else{
-                Emsg.value = 'hi'
+                Emsg.value ='';
+                let eM = msg.value.split('')
+                if(key.value ==''){
+                    let rKey = '';
+                    for(let i = 0; i<eM.length;i++){
+                        rKey+=String.fromCharCode(getRandomInt(255));
+                    }
+                    key.value = rKey;
+                }
+                let eK = key.value.split('');
+                if(eM.length != eK.length){
+                    alert('Ключ и сообщения разной длинны!')
+                }else{
+                    for(let i=0;i<eM.length;i++){
+                        console.log(crypt(eM[i],eK[i]));
+                        
+                        Emsg.value+=String.fromCharCode(crypt(eM[i],eK[i]))
+                    }
+                }
+            }
+        $('#btn2').click(()=>{
+            if(msg.value == '' && key.value == ''){
+                alert('Введите сообщение и ключ!')
+            }else{
+                Emsg.value ='';
+                let eM = msg.value.split('')
+                let eK = key.value.split('');
+                if(eM.length != eK.length){
+                    alert('Ключ и сообщения разной длинны!')
+                }else{
+                    for(let i=0;i<eM.length;i++){
+                        console.log(crypt(eM[i],eK[i]));
+                        Emsg.value+=String.fromCharCode(crypt(eM[i],eK[i]))
+                    }
+                }
             }
         })
+            
+
+        })
+        let crypt = function(eM,eK){
+            return eM.charCodeAt(0)^eK.charCodeAt(0);
+        }
+
     </script>
 </body>
 </html>
