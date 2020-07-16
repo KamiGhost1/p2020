@@ -34,6 +34,7 @@
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
         <input type="button" id="btn1" value="Зашифровать">
         <input type="button" id="btn2" value="Расшифровать">
+        <input type="button" id="btn4" value="Генерировать ключ">
         <input type="button" id="btn3" value="Отчистить">
     </div>
     <div class="container-fluid justify-content-center" style="display: flex;margin: 1% 0%">
@@ -44,6 +45,14 @@
         let msg = document.getElementById('msg');
         let Emsg = document.getElementById('Emsg');
         let key = document.getElementById('key');
+
+        $('#btn4').click(()=>{
+            let rKey = '';
+            for(let i = 0; i<msg.value.length;i++){
+                rKey+=String.fromCharCode(getRandomInt(255));
+            }
+            key.value = rKey;
+        })
 
         $('#btn3').click(()=>{
             Emsg.value ='';
